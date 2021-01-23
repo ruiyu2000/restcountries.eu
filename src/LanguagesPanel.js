@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { useSortBy, useTable } from 'react-table';
 
+import Numerical from './Numerical';
+
 const LanguagesPanel = ({ languages }) => {
   const columns = useMemo(() => [
     { Header: 'Language', accessor: 'name' },
     { Header: 'Countries', accessor: 'countries', disableSortBy: true, Cell: ({ value }) => value.map(c => c.name).join(', ') },
-    { Header: 'Population', accessor: 'population' },
+    { Header: 'Population', accessor: 'population', Cell: ({value}) => <Numerical>{Number(value/10**6).toFixed(1)}</Numerical> },
   ], []);
 
   const {

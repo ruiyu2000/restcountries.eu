@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSortBy, useTable } from 'react-table';
-import styled from 'styled-components';
+
+import Numerical from './Numerical';
 
 const km2toMi2 = km2 => km2 / 2.59
 
@@ -80,10 +81,5 @@ const CountriesPanel = ({ countries }) => {
     </>
   )
 };
-
-const Numerical = styled.div`
-  width: 100%;
-  text-align: right;
-`;
 
 export default CountriesPanel;
