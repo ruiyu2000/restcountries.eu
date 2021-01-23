@@ -26,7 +26,7 @@ const App = () => {
       setCountries(res.data)
     })()
   }, []);
-  console.log(countries)
+  // console.log(countries)
 
   const languages = useMemo(() => {
     const langs = {}
@@ -43,7 +43,7 @@ const App = () => {
     })
     return Object.values(langs);
   }, [countries]);
-  console.log('languages', languages)
+  // console.log('languages', languages)
 
   return (
     <SMain>
