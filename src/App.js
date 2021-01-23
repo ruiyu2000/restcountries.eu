@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
@@ -14,6 +16,15 @@ List languages with the countries that speak it in a table
 */
 
 const App = () => {
+  const [countries, setCountries] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get('https://restcountries.eu/rest/v2/all')
+      setCountries(res.data)
+    })()
+  }, []);
+  console.log(countries)
+
   return (
     <SMain>
       <Tabs selectedTabClassName='selected' selectedTabPanelClassName='selected'>
