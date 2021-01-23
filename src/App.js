@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
@@ -28,6 +28,23 @@ const App = () => {
   }, []);
   console.log(countries)
 
+  const languages = useMemo(() => {
+    const langs = {}
+    countries.flatMap(country => country.languages).forEach(lang => {
+      langs[lang.name] = lang
+      langs[lang.name].countries = []
+      langs[lang.name].population = 0
+    })
+    countries.forEach(country => {
+      country.languages.forEach(lang => {
+        langs[lang.name].countries.push(country)
+        langs[lang.name].population += country.population
+      })
+    })
+    return Object.values(langs);
+  }, [countries]);
+  console.log('languages', languages)
+
   return (
     <SMain>
       <Tabs selectedTabClassName='selected' selectedTabPanelClassName='selected'>
@@ -39,7 +56,7 @@ const App = () => {
           <CountriesPanel countries={countries} />
         </STabPanel>
         <STabPanel>
-          <LanguagesPanel />
+          <LanguagesPanel languages={languages} />
         </STabPanel>
       </Tabs>
     </SMain>
