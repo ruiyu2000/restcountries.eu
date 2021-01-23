@@ -16,6 +16,8 @@ List languages with the countries that speak it in a table
   Show columns: Language, Countries[], Population
 */
 
+const km2toMi2 = km2 => km2 / 2.59
+
 const App = () => {
   const [countries, setCountries] = useState([]);
   useEffect(() => {
@@ -29,8 +31,8 @@ const App = () => {
   const columns = useMemo(() => [
     { Header: 'Name', accessor: 'name' },
     { Header: 'Region', accessor: 'region' },
-    { Header: 'Area', accessor: 'area' },
-    { Header: 'Population', accessor: 'population' },
+    { Header: 'Area (mi2)', accessor: 'area', Cell: ({value}) => <Numerical>{Number(km2toMi2(value)).toFixed()}</Numerical> },
+    { Header: 'Population', accessor: 'population', Cell: ({value}) => <Numerical>{Number(value/10**6).toFixed(1)}</Numerical> },
   ], []);
 
   const {
@@ -122,5 +124,10 @@ const STabPanel = styled(TabPanel)`
   }
 `;
 STabPanel.tabsRole = 'TabPanel';
+
+const Numerical = styled.div`
+  width: 100%;
+  text-align: right;
+`;
 
 export default App;
