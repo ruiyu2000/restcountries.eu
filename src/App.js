@@ -43,6 +43,29 @@ const App = () => {
     prepareRow,
   } = useTable({ columns, data: countries }, useSortBy);
 
+  const getAveragePopulation = () => countries
+    .map(country => country.population)
+    .reduce((a, b) => a + b, 0)
+    / countries.length
+  
+  const getSmallestArea = () => {
+    const smallest = countries
+      .slice(0)
+      .filter(country => country.area !== null)
+      .sort((a, b) => a.area - b.area)
+      [0]
+    return smallest && `${smallest.name} (${smallest.area})`
+  }  
+
+  const getBiggestArea = () => {
+    const biggest = countries
+      .slice(0)
+      .filter(country => country.area !== null)
+      .sort((a, b) => b.area - a.area)
+      [0]
+    return biggest && `${biggest.name} (${biggest.area})`
+  }
+
   return (
     <SMain>
       <Tabs selectedTabClassName='selected' selectedTabPanelClassName='selected'>
@@ -79,6 +102,10 @@ const App = () => {
               })}
             </tbody>
           </table>
+
+          <div style={{ marginTop: '20px' }}>Average population: {getAveragePopulation()}</div>
+          <div>Smallest area: {getSmallestArea()}</div>
+          <div>Biggest area: {getBiggestArea()}</div>
         </STabPanel>
         <STabPanel>
           Panel 2
