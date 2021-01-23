@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTable } from 'react-table';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
@@ -25,6 +26,21 @@ const App = () => {
   }, []);
   console.log(countries)
 
+  const columns = useMemo(() => [
+    { Header: 'Name', accessor: 'name' },
+    { Header: 'Region', accessor: 'region' },
+    { Header: 'Area', accessor: 'area' },
+    { Header: 'Population', accessor: 'population' },
+  ], []);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({ columns, data: countries });
+
   return (
     <SMain>
       <Tabs selectedTabClassName='selected' selectedTabPanelClassName='selected'>
@@ -33,7 +49,33 @@ const App = () => {
           <STab>Languages</STab>
         </STabList>
         <STabPanel>
-          Panel 1
+          <table style={{ width: '100%' }} {...getTableProps()}>
+            <thead>
+              {headerGroups.map(headerGroup => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map(column => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render('Header')}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map(row => {
+                prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map(cell => (
+                      <td {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </td>
+                    ))}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </STabPanel>
         <STabPanel>
           Panel 2
