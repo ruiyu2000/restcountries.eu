@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
-import { useTable } from 'react-table';
+import { useSortBy, useTable } from 'react-table';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import styled from 'styled-components';
 
@@ -41,7 +41,7 @@ const App = () => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: countries });
+  } = useTable({ columns, data: countries }, useSortBy);
 
   return (
     <SMain>
@@ -56,8 +56,9 @@ const App = () => {
               {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       {column.render('Header')}
+                      {column.isSorted && (column.isSortedDesc ? '▼' : '▲')}
                     </th>
                   ))}
                 </tr>
